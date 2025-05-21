@@ -38,6 +38,11 @@ video_id = None
 tts_type = None
 tts_thread = None
 tts_stop_event = threading.Event()
+scene_status = "Монолог"
+game_status = "Выключена"
+viewers_count = 0
+stream_status = "Игра: " + game_status + "; Сцена: " + scene_status + "; Зрители: " + str(viewers_count)
+
 
 
 
@@ -170,10 +175,9 @@ def read_chat():
 def llm(message):
     global client
     start_sequence = " #########"
-
     response = client.completions.create(
         model=OAI.model,
-        prompt=OAI.prompt + "\n\n#########\n" + message + "\n#########\n",
+        prompt=OAM.promt+"\n\n#########\n" + stream_status + "\n\n#########\n" + message + "\n#########\n",
         temperature=OAI.temperature,
         max_tokens=OAI.max_tokens,
         top_p=OAI.top_p,
